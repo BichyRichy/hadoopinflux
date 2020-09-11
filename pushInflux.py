@@ -42,7 +42,7 @@ for key in dirs:
 
 try:
 	report = subprocess.Popen(['/usr/bin/hdfs', 'dfsadmin', '-report'],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	stdout, stderr = fs.communicate()
+	stdout, stderr = report.communicate()
 except:
 	print "error:", sys.exc_info()[0]
 
