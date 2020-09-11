@@ -12,7 +12,7 @@ fs = subprocess.Popen(['hadoop', 'fs', '-df'],stdout=subprocess.PIPE, stderr=sub
 stdout, stderr = fs.communicate()
 
 try:
-	line = stdout.splitlines[1]
+	line = stdout.splitlines()[1]
 	fs, size, used, available, perc = line.split()
 	print [fs, size, used, available, perc]
 except ValueError:
