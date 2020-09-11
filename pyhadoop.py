@@ -16,6 +16,7 @@ for key in dirs:
 			#data = 		
 		except ValueError:
 			#print "Error: Too many values"
+			continue
 		
 fs = subprocess.Popen(['hadoop', 'fs', '-df'],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 stdout, stderr = fs.communicate()
