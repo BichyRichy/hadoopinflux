@@ -7,16 +7,22 @@ dirs = {"CMS": "/cms/*", "Phedex": "/cms/phedex/store/*", "Store": "/cms/store/*
 url = 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db'
 header = {'Authorization': 'Token hadoop_writer:Hadoop3r'}
 
-		
-fs = subprocess.Popen(['hadoop', 'fs', '-df'],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-stdout, stderr = fs.communicate()
-
+# Stats of the entire storage
+try:		
+	fs = subprocess.Popen(['hadoop', 'fs', '-df'],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	stdout, stderr = fs.communicate()
+except:
+	print "error:", sys.exc_info()[0]
 try:
 	line = stdout.splitlines()[1]
 	fs, size, used, available, perc = line.split()
-	print [fs, size, used, available, perc]
+	data = 'size,dir=%(fs)s value=%(s)s\n \
+	used,dir=%(fs)s value=%(u)s\n \
+	available,dir=%(fs)s value=%(a)s\n \
+	percent_used,dir=%(fs)s value=%(p)s' % {"fs":fs,"s":size,"u":used,"a":available,"p":perc}
+	print data
 except ValueError:
-	1 == 1
+	print "error: too many arguments"
 
 for key in dirs:
 	fsdu = subprocess.Popen(['hadoop', 'fs', '-du', dirs[key]],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
