@@ -16,10 +16,11 @@ except:
 try:
 	line = stdout.splitlines()[1]
 	fs, size, used, available, perc = line.split()
+	perc = perc[:-1]
 	data = 'size,dir=%(fs)s value=%(s)s\n\
 used,dir=%(fs)s value=%(u)s\n\
 available,dir=%(fs)s value=%(a)s\n\
-percent_used,dir=%(fs)s value=%(p)s\n' % {"fs":fs,"s":size,"u":used,"a":available,"p":perc}
+percent_used,dir=%(fs)s value=%(p)s' % {"fs":fs,"s":size,"u":used,"a":available,"p":perc}
 	r = requests.post(url, headers = header, data=data, timeout=40)
 	print(r.text)
 except ValueError:
