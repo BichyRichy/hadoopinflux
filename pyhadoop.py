@@ -16,9 +16,9 @@ except:
 try:
 	line = stdout.splitlines()[1]
 	fs, size, used, available, perc = line.split()
-	data = 'size,dir=%(fs)s value=%(s)s\n \
-used,dir=%(fs)s value=%(u)s\n \
-available,dir=%(fs)s value=%(a)s\n \
+	data = 'size,dir=%(fs)s value=%(s)s\n\
+used,dir=%(fs)s value=%(u)s\n\
+available,dir=%(fs)s value=%(a)s\n\
 percent_used,dir=%(fs)s value=%(p)s' % {"fs":fs,"s":size,"u":used,"a":available,"p":perc}
 	print data
 except ValueError:
