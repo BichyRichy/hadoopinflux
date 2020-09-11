@@ -2,6 +2,7 @@ import subprocess
 import requests
 import time
 import sys
+import json
 
 dirs = {"CMS": "/cms/*", "Phedex": "/cms/phedex/store/*", "Store": "/cms/store/*", "Group": "/cms/store/group/*", "Users": "/cms/store/user/*", "All": "/*"}
 url = 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db'
@@ -22,7 +23,7 @@ used,dir=%(fs)s value=%(u)s\n\
 available,dir=%(fs)s value=%(a)s\n\
 percent_used,dir=%(fs)s value=%(p)s' % {"fs":fs,"s":size,"u":used,"a":available,"p":perc}
 	r = requests.post(url, headers = header, data=data, timeout=40)
-	print(r.text)
+	print(r.json())
 except ValueError:
 	print "error: too many arguments"
 
