@@ -2,6 +2,7 @@ import subprocess
 import requests
 import json
 import re
+import sys
 
 dirs = {"CMS": "/cms/*", "Phedex": "/cms/phedex/store/*", "Store": "/cms/store/*", "Group": "/cms/store/group/*", "Users": "/cms/store/user/*", "All": "/*"}
 url = 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db'
