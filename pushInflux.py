@@ -5,7 +5,9 @@ import re
 
 dirs = {"CMS": "/cms/*", "Phedex": "/cms/phedex/store/*", "Store": "/cms/store/*", "Group": "/cms/store/group/*", "Users": "/cms/store/user/*", "All": "/*"}
 url = 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db'
-header = {'Authorization': 'Token hadoop_writer:Hadoop3r'}
+
+with open('conf.json') as h:
+	header = json.load(h)
 
 # Stats of the entire storage
 try:		
