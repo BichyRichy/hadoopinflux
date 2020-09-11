@@ -32,8 +32,8 @@ for key in dirs:
 	for line in stdout.splitlines():
 		try:
 			size, usage, path = line.split()
-			#data =
-			print [size, usage, path] 		
 		except ValueError:
 			print "Error: Too many values"
 			continue
+		data = 'size,dir=%(p)s value=%(s)s\nusage,dir=%(p)s value=%(u)s' % {"p":path,"s":size,"u":usage}
+		r = requests.post(url, headers=header, data=data, timeout=40)
