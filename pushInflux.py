@@ -34,7 +34,6 @@ for key in dirs:
 		try:
 			size, usage, path = line.split()
 		except ValueError:
-			print "Error: Too many values"
 			continue
 		if size != '0':
 			data = 'size,dir=%(p)s value=%(s)s\nusage,dir=%(p)s value=%(u)s' % {"p":path,"s":size,"u":usage}
