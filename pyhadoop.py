@@ -25,3 +25,5 @@ for line in stdout.splitlines():
 	try:
 		fs, size, used, available, perc = line.split()
 		print [fs, size, used, available, perc]
+	except ValueError:
+		continue
