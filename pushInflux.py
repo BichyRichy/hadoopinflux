@@ -48,4 +48,6 @@ except:
 
 for line in stdout.splitlines():
 	if re.match("Missing blocks: [0-9]+$", line):
-		print line
+		missing = int(filter(str.isdigit, line))
+		data = 'missing_blocks, value=%d' % (missing)
+		r = requests.post(url, headers=header, data=data, timeout=40)
