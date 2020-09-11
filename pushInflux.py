@@ -23,7 +23,6 @@ used,dir=%(fs)s value=%(u)s\n\
 available,dir=%(fs)s value=%(a)s\n\
 percent_used,dir=%(fs)s value=%(p)s' % {"fs":fs,"s":size,"u":used,"a":available,"p":perc}
 	r = requests.post(url, headers=header, data=data, timeout=40)
-	print r.text
 except ValueError:
 	print "error: too many arguments"
 
@@ -33,7 +32,8 @@ for key in dirs:
 	for line in stdout.splitlines():
 		try:
 			size, usage, path = line.split()
-			#data = 		
+			#data =
+			print [size, usage, path] 		
 		except ValueError:
-			#print "Error: Too many values"
+			print "Error: Too many values"
 			continue
