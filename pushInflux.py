@@ -1,8 +1,7 @@
 import subprocess
 import requests
-import time
-import sys
 import json
+import re
 
 dirs = {"CMS": "/cms/*", "Phedex": "/cms/phedex/store/*", "Store": "/cms/store/*", "Group": "/cms/store/group/*", "Users": "/cms/store/user/*", "All": "/*"}
 url = 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db'
@@ -38,3 +37,13 @@ for key in dirs:
 		if size != '0':
 			data = 'size,dir=%(p)s value=%(s)s\nusage,dir=%(p)s value=%(u)s' % {"p":path,"s":size,"u":usage}
 			r = requests.post(url, headers=header, data=data, timeout=40)
+
+try:
+	report = subprocess.Popen(['/usr/bin/hdfs', 'dfsadmin', '-report'],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	stdout, stderr = fs.communicate()
+except:
+	print "error:", sys.exc_info()[0]
+
+for line in stdout.splitlines():
+	if re.match("Missing blocks: [0-9]+$", line):
+		print line
