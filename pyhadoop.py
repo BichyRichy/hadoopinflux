@@ -21,4 +21,6 @@ fs = subprocess.Popen(['hadoop', 'fs', '-df'],stdout=subprocess.PIPE, stderr=sub
 stdout, stderr = fs.communicate()
 
 for line in stdout.splitlines():
-	print line
+	try:
+		fs, size, used, available, perc = line.split()
+		print [fs, size, used, available, perc]
