@@ -11,12 +11,12 @@ header = {'Authorization': 'Token hadoop_writer:Hadoop3r'}
 fs = subprocess.Popen(['hadoop', 'fs', '-df'],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 stdout, stderr = fs.communicate()
 
-for line in stdout.splitlines():
-	try:
-		fs, size, used, available, perc = line.split()
-		print [fs, size, used, available, perc]
-	except ValueError:
-		continue
+try:
+	line = stdout.splitlines[1]
+	fs, size, used, available, perc = line.split()
+	print [fs, size, used, available, perc]
+except ValueError:
+	1 == 1
 
 for key in dirs:
 	fsdu = subprocess.Popen(['hadoop', 'fs', '-du', dirs[key]],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
