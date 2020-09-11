@@ -35,5 +35,6 @@ for key in dirs:
 		except ValueError:
 			print "Error: Too many values"
 			continue
-		data = 'size,dir=%(p)s value=%(s)s\nusage,dir=%(p)s value=%(u)s' % {"p":path,"s":size,"u":usage}
-		r = requests.post(url, headers=header, data=data, timeout=40)
+		if size != '0':
+			data = 'size,dir=%(p)s value=%(s)s\nusage,dir=%(p)s value=%(u)s' % {"p":path,"s":size,"u":usage}
+			r = requests.post(url, headers=header, data=data, timeout=40)
