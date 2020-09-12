@@ -15,7 +15,8 @@ try:
 	fs = subprocess.Popen(['hadoop', 'fs', '-df'],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	stdout, stderr = fs.communicate()
 except:
-	print "error:", sys.exc_info()[0]
+	print "could not run hadoop"
+	raise
 try:
 	line = stdout.splitlines()[1]
 	fs, size, used, available, perc = line.split()
@@ -28,9 +29,14 @@ percent_used,dir=%(fs)s value=%(p)s' % {"fs":fs,"s":size,"u":used,"a":available,
 except ValueError:
 	print "error: too many arguments"
 
+# Stats of each subdirectory
 for key in dirs:
-	fsdu = subprocess.Popen(['hadoop', 'fs', '-du', dirs[key]],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	stdout,stderr = fsdu.communicate()
+	try:
+		fsdu = subprocess.Popen(['hadoop', 'fs', '-du', dirs[key]],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		stdout,stderr = fsdu.communicate()
+	except:
+		print "could not run hadoop"
+		raise
 	for line in stdout.splitlines():
 		try:
 			size, usage, path = line.split()
@@ -40,14 +46,20 @@ for key in dirs:
 			data = 'size,dir=%(p)s value=%(s)s\nusage,dir=%(p)s value=%(u)s' % {"p":path,"s":size,"u":usage}
 			r = requests.post(url, headers=header, data=data, timeout=40)
 
+# Missing blocks and nodes
 try:
 	report = subprocess.Popen(['/usr/bin/hdfs', 'dfsadmin', '-report'],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	stdout, stderr = report.communicate()
 except:
-	print "error:", sys.exc_info()[0]
+	print "could not run hdfs"
+	raise
 
 for line in stdout.splitlines():
 	if re.match("Missing blocks: [0-9]+$", line):
 		missing = int(filter(str.isdigit, line))
-		data = 'missing_blocks, value=%d' % (missing)
+		data = 'missing_blocks value=%d' % (missing)
+		r = requests.post(url, headers=header, data=data, timeout=40)
+	else if re.match("Live datanodes \([0-9]+\):", line):
+		nodes = int(filter(str.isdigit, line))
+		data = 'live_nodes value=%d' % (nodes)
 		r = requests.post(url, headers=header, data=data, timeout=40)
