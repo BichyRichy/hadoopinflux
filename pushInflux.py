@@ -59,7 +59,7 @@ for line in stdout.splitlines():
 		missing = int(filter(str.isdigit, line))
 		data = 'missing_blocks value=%d' % (missing)
 		r = requests.post(url, headers=header, data=data, timeout=40)
-	else if re.match("Live datanodes \([0-9]+\):", line):
+	elif re.match("Live datanodes \([0-9]+\):", line):
 		nodes = int(filter(str.isdigit, line))
 		data = 'live_nodes value=%d' % (nodes)
 		r = requests.post(url, headers=header, data=data, timeout=40)
