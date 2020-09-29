@@ -6,7 +6,7 @@ CORRUPT_FILES=`mktemp -t FSCK.txt.XXXXXXX`
 hdfs fsck ${TOP} 2>&1 | grep CORRUPT | awk -F\: '{print $1}' | sort | uniq > $CORRUPT_FILES
 
 
-TOKEN=`jq .Authorization conf.json | sed 's/"//g'`
+TOKEN=`cat conf.json | grep Authorization | sed 's/"//g' | sed -e 's/^[[:space:]]*//'`
 
 check() {
   DIR=$1
