@@ -6,13 +6,15 @@ CORRUPT_FILES=`mktemp -t FSCK.txt.XXXXXXX`
 hdfs fsck ${TOP} 2>&1 | grep CORRUPT | awk -F\: '{print $1}' | sort | uniq > $CORRUPT_FILES
 
 
+TOKEN=`jq .Authorization conf.json`
+
 check() {
   DIR=$1
   ALIAS=$2
   n_corrupt=`cat $CORRUPT_FILES | grep $DIR | grep -v "The filesystem" | wc -l`
   if [ ! -z $ALIAS ] ; then DIR=$ALIAS ; fi
   printf "%-40s %8i\n" $DIR $n_corrupt
-  curl -i -XPOST 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db' -H @auth -d "corrupt_files,dir=$DIR value=$n_corrupt"
+  curl -i -XPOST 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db' -H "Authorization: $TOKEN" -d "corrupt_files,dir=$DIR value=$n_corrupt"
   return $n_corrupt
 }
 
