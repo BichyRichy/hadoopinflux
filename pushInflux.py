@@ -3,7 +3,7 @@ import requests
 import json
 import re
 
-dirs = {"CMS": "/cms/*", "Phedex": "/cms/phedex/store/*", "Store": "/cms/store/*", "Group": "/cms/store/group/*", "Users": "/cms/store/user/*", "All": "/*"}
+dirs = {"CMS": "/hadoop/cms/*", "Phedex": "/hadoop/cms/phedex/store/*", "Store": "/hadoop/cms/store/*", "Group": "/hadoop/cms/store/group/*", "Users": "/hadoop/cms/store/user/*", "All": "/hadoop/*"}
 url = 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db'
 
 with open('conf.json') as h:
