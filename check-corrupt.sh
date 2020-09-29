@@ -12,7 +12,7 @@ check() {
   n_corrupt=`cat $CORRUPT_FILES | grep $DIR | grep -v "The filesystem" | wc -l`
   if [ ! -z $ALIAS ] ; then DIR=$ALIAS ; fi
   printf "%-40s %8i\n" $DIR $n_corrupt
-  curl -i -XPOST 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db' -H "Authorization: Token hadoop_writer:Hadoop3r" -d "corrupt_files,dir=$DIR value=$n_corrupt"
+  curl -i -XPOST 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db' -H @auth -d "corrupt_files,dir=$DIR value=$n_corrupt"
   return $n_corrupt
 }
 
@@ -23,7 +23,6 @@ compile_stats() {
     check $TOP/$SUBDIR
   done
   check $TOP "TOTAL"
-  echo 
   check "/cms/phedex/store/PhEDEx_LoadTest07/LoadTest07_Debug_UCSD" "LoadTest"
   lt_corrupt=$?
   check "/cms/phedex/store/mc/HC/GenericTTbar/GEN-SIM-RECO/CMSSW_7_0_4_START70_V7-v1" "HammerCloud"
