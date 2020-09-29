@@ -11,7 +11,8 @@ check() {
   ALIAS=$2
   n_corrupt=`cat $CORRUPT_FILES | grep $DIR | grep -v "The filesystem" | wc -l`
   if [ ! -z $ALIAS ] ; then DIR=$ALIAS ; fi
-  curl -i -XPOST 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db' -H "Authorization: Token hadoop_writer:Hadoop3r" --data-raw "corrupt_files,dir=$DIR value=$n_corrupt"
+  printf "%-40s %8i\n" $DIR $n_corrupt
+  curl -i -XPOST 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db' -H "Authorization: Token hadoop_writer:Hadoop3r" -d "corrupt_files,dir=$DIR value=$n_corrupt"
   return $n_corrupt
 }
 
@@ -33,5 +34,8 @@ compile_stats() {
   return $rc
 }
 
-rc=`compile_stats`
+compile_stats
+
+rc=$?
 exit $rc
+
