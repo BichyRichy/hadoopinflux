@@ -14,7 +14,7 @@ check() {
   n_corrupt=`cat $CORRUPT_FILES | grep $DIR | grep -v "The filesystem" | wc -l`
   if [ ! -z $ALIAS ] ; then DIR=$ALIAS ; fi
   printf "%-40s %8i\n" $DIR $n_corrupt
-  curl -i -XPOST 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db' -H "Authorization: $TOKEN" -d "corrupt_files,dir=$DIR value=$n_corrupt"
+  curl -i -XPOST 'http://graph.t2.ucsd.edu:8086/write?db=hadoop_metrics_db' -H "$TOKEN" -d "corrupt_files,dir=$DIR value=$n_corrupt"
   return $n_corrupt
 }
 
